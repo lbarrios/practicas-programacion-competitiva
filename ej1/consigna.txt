@@ -1,0 +1,8 @@
+A = [A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10]]
+P = [
+  [0,1,3,5],
+    [2,4,5,8],
+    ]
+    
+    Quiero ver el mínimo array A[x:y] perteneciente a A, con x e y índices de A, tal que para cada array Pi contenido en P, para al menos uno de los elementos p pertenecientes a cada Pi, x<=p<=y.
+    Hacer la versión en que P tiene sólo dos array, y la versión en que P tiene n arrays.
