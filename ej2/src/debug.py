@@ -1,7 +1,7 @@
 from term import clear
 from grapher import printBoard
 from time import sleep
-DEBUG_SPEED=0.000005
+DEBUG_SPEED=0.00005
 WIN_PAUSE=5
 
 def DEBUG_MOVEMENT(N,movements):

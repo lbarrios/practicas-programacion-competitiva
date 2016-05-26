@@ -30,7 +30,8 @@ def backtrack(pos, movements):
     if DEBUG: DEBUG_MOVEMENT(N,movements)
 
     if isLastMovement(movements):
-        return pos if isOneMovementFromTheStart(pos) else False
+        return movements
+        return movements if isOneMovementFromTheStart(pos) else False
 
     for move in allMovements:
         if isOutsideOfTheBoard(move(pos)):
@@ -58,5 +59,7 @@ for mov in movements:
     board[mov[0]-1][mov[1]-1] = i
     printBoard(board,i,"BAD")
     i += 1
-    sleep(0.5)
+    sleep(0.03)
     clear()
+
+printBoard(board,i,"OK")
