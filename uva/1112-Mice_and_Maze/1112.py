@@ -14,6 +14,7 @@ for t in range(testcases):
     for m in range(M):
         a, b, time_units = map(int,input().split())
         connections[b].append((time_units,a))
+    # Dijkstra, starting from E
     pending_nodes = PriorityQueue()
     pending_nodes.put((0,E))
     while not pending_nodes.empty():
@@ -22,7 +23,8 @@ for t in range(testcases):
             if distances_from_E[current_node] + d < distances_from_E[node]:
                 distances_from_E[node] = distances_from_E[current_node] + d
                 pending_nodes.put((d,node))
-    total = sum([1 for d in distances_from_E if d<=T]) # we are not counting cell E
+    total = sum([1 for d in distances_from_E if d<=T])
     print(total)
+    # because of strange output format, we need a new line if this is NOT the last testcase
     if(t < testcases-1):
         print()
