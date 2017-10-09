@@ -67,4 +67,22 @@ no
 
 ## Solving
 
-TODO;
+Given a graph, and N sets of nodes, we need to answer for every set S if it 
+conforms a geodesic set. That is to see, if every node in the graph is 
+reachable given some pair (u,v)∈S, from u but using only the edges corresponding
+to a shortest path from u to v.
+
+We can note that the edges are unweighted and undirected. This implies a 
+shortest path between u and v can be obtained running a BFS from u. 
+BFS iterates through the "levels" of the tree that have u as root, and for
+every level "d" it finds the nodes that are in it; that is to say, if a node v
+is in the level "d" of the tree, it is a minimum distance "d" from u in the
+original graph.
+
+We can precalculate every node
+
+Given the graph (V,E), if we run a BFS from every node u, we can store the nodes
+reachables in the path between v and every node u. So, we can have a matrix
+```reachables[u][v] = list(nodes)```, storing for every pair of nodes (u,v) the nodes
+that are reachables in the minimum paths between u and v. The first time we find
+the node v from u, we can store the minimum distance, ```distance[u][v] = int```.
