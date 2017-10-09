@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# http://www.spoj.com/problems/PT07Z/
 
 nodes = int(input())
 edges = [list() for n in range(nodes)]
