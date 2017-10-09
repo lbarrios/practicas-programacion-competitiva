@@ -134,4 +134,4 @@ Finally, the answer to the problem will be "yes" if every node gives true
 to ```is_in_minimum_path``` for at least some pair of nodes inside S. 
 Given that the graph is undirected, we can evaluate only the pairs (s1,s2)
 that satisfies that s1<s2, because _path(s1,s2)=path(s2,s1)_. In this case,
-n is small, so we don't need to worry about making micro-optimizations.
+n is small, so we don't need to worry about making more optimizations.
