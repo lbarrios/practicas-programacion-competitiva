@@ -7,7 +7,7 @@
 ## Graph Theory
 
 #### Traversal
-- [PT07Z - Longest path in a tree](spoj/PT07Z)
+- [Longest path in a tree (SPOJ-PT07Z)](spoj/PT07Z)
 
 #### Shortest Path
 
