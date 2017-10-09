@@ -1,1 +1,29 @@
-http://www.spoj.com/problems/PT07Z/
+# [PT07Z - Longest path in a tree](http://www.spoj.com/problems/PT07Z/7)
+
+### Problem Description
+
+You are given an unweighted, undirected tree. Write a program to output the length of the longest path 
+(from one node to another) in that tree. The length of a path in this case is number of edges we traverse
+from source to destination.
+
+### Input
+
+The first line of the input file contains one integer N --- number of nodes in the tree (0 < N <= 10000).
+Next N-1 lines contain N-1 edges of that tree --- Each line contains a pair (u, v) means
+there is an edge between node u and node v (1 <= u, v <= N).
+
+### Output
+
+Print the length of the longest path on one line.
+
+### Example Input:
+```
+3
+1 2
+2 3
+```
+
+### Example Output:
+```
+2
+```
