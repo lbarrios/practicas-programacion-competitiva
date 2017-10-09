@@ -12,7 +12,7 @@ The n painted peaks are represented by a non-closed polyline, consisting of 2n s
 The segments go through 2n+1 points with coordinates 
 ```(1, y(1)), (2, y(2)), ..., (2n+1, y(2n+1))```, with the i-th segment connecting 
 the point (i, y(i)) and the point (i+1, y(i+1)). 
-For any even i (2≤i≤2n) the following condition holds: ```y(i)-1 < y(i) and y(i) > y(i)+1```.
+For any even i (2 ≤ i ≤ 2n) the following condition holds: ```y(i-1) < y(i) and y(i) > y(i+1)```.
 
 We shall call a vertex of a polyline with an even x coordinate a mountain peak.
 
@@ -34,12 +34,17 @@ Given Bolek's final picture, restore the initial one.
 
 ### Input
 
-The first line contains two space-separated integers n and k (1 ≤ k ≤ n ≤ 100). The next line contains 2n + 1 space-separated integers r1, r2, ..., r2n + 1 (0 ≤ ri ≤ 100) — the y coordinates of the polyline vertices on Bolek's picture.
+The first line contains two space-separated integers n and k (1 ≤ k ≤ n ≤ 100). 
+The next line contains 2n + 1 space-separated integers 
+```r(1), r(2), ..., r(2n+1) (0 ≤ r(i) ≤ 100)``` — the y coordinates of the polyline 
+vertices on Bolek's picture.
 
 It is guaranteed that we can obtain the given picture after performing the described actions on some picture of mountain peaks.
 
 ### Output
-Print 2n + 1 integers y1, y2, ..., y2n + 1 — the y coordinates of the vertices of the polyline on the initial picture. If there are multiple answers, output any one of them.
+Print 2n + 1 integers ```y1, y2, ..., y(2n+1)``` — the y coordinates of the vertices 
+of the polyline on the initial picture. If there are multiple answers, output any 
+one of them.
 
 ### Example 1
 
