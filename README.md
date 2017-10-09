@@ -1,5 +1,9 @@
 # Problem Index
 
+## Greedy
+
+- [Mountain Scenery (Codeforces-218-A)](codeforces/218-A-Mountain_Scenery)
+
 ## Graph Theory
 
 #### Shortest Path
