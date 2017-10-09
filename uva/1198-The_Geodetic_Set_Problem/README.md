@@ -65,7 +65,7 @@ yes
 no
 ```
 
-## Solving
+## Solving (first try)
 
 Given a graph, and N sets of nodes, we need to answer for every set S if it 
 conforms a geodesic set. That is to see, if every node in the graph is 
@@ -79,10 +79,59 @@ every level "d" it finds the nodes that are in it; that is to say, if a node v
 is in the level "d" of the tree, it is a minimum distance "d" from u in the
 original graph.
 
-We can precalculate every node
-
 Given the graph (V,E), if we run a BFS from every node u, we can store the nodes
 reachables in the path between v and every node u. So, we can have a matrix
 ```reachables[u][v] = list(nodes)```, storing for every pair of nodes (u,v) the nodes
 that are reachables in the minimum paths between u and v. The first time we find
 the node v from u, we can store the minimum distance, ```distance[u][v] = int```.
+
+...
+
+## Solving (second try)
+
+#### Idea of the problem
+
+Basically, we want to know, given a set of nodes S, if every node of the graph 
+is inside a minimum path from some pair of nodes of these set. So, if we iterate
+over every node in the graph, and for every one of them we ask the question
+"is this node in some minimum path between some pair of nodes of S?", and for
+all of them the answer is "yes", then  the answer to our problem will be "yes".
+Otherwise, it will be "no".
+
+#### How can we know if some node v is in some minimum path between some other two nodes? 
+
+Let be distance(u,v) the length of the minimum path between the nodes u and v. 
+Given a node v, and a pair of nodes s1, s2, we want to know if v is (or not) in some
+minimum path from s1 to s2. 
+
+- __If v is inside a minimum path between s1 and s2__: 
+then the minimum path from s1 to v plus 
+the minimum path from v to s2, is itself a minimum path 
+from s1 to s2.
+- __If v is not inside a minimum path between s1 and s2__: 
+then the minimum path between s1 and v plus the
+minimum path between v and s2 will form a path longer than the 
+minimum between s1 and s2.
+
+This is to say, v is inside a minimum path between s1 and s2 if and only if
+**distance(s1,v) + distance(v,s2) = distance(s1,s2)**.
+
+#### Coding the solution
+
+We can use Floyd-Warshall Algorithm to obtain the distance between every pair
+of nodes of the graph.
+The result will be stored in a ```distances[u][v]``` matrix.
+
+After that, we can define the answer to 
+"is v in the minimum path between s1 and s2" as:
+ 
+```python
+def is_in_minimum_path(v, s1, s2):
+    return distances[s1][v] + distances[v][s2] == distances[s1][s2]
+```
+
+Finally, the answer to the problem will be "yes" if every node gives true
+to ```is_in_minimum_path``` for at least some pair of nodes inside S. 
+Given that the graph is undirected, we can evaluate only the pairs (s1,s2)
+that satisfies that s1<s2, because _path(s1,s2)=path(s2,s1)_. In this case,
+n is small, so we don't need to worry about making micro-optimizations.
