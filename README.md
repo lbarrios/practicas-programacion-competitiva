@@ -6,6 +6,9 @@
 
 ## Graph Theory
 
+#### Traversal
+- [PT07Z - Longest path in a tree](spoj/PT07Z)
+
 #### Shortest Path
 
 - [Mice and Mace (UVA-1112)](uva/1112-Mice_and_Maze)
