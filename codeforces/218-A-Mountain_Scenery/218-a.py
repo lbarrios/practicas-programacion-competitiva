@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 # http://codeforces.com/problemset/problem/218/A
 
 n, k = map(int,input().split())
