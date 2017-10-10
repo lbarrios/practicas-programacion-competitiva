@@ -1,5 +1,8 @@
 # Problem Index
 
+## Unsolved
+- [Switch The Lights (UVA-11974)](uva/11974-Switch_The_Lights)
+
 ## Greedy
 
 - [Mountain Scenery (Codeforces-218-A)](codeforces/218-A-Mountain_Scenery)
