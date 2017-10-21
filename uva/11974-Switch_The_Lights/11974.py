@@ -19,13 +19,13 @@ for testcase in range(testcase_count):
 
         # initially all the states are unreachable
         # except the initial state (all on) that is reachable with 0 switches
-        states = [(switch_count + 1) for state in range(2 ** lamp_count)]
-        states[initial_state] = (0)
+        states = [(switch_count + 1) for s in range(2 ** lamp_count)]
+        states[initial_state] = 0
 
         # now try all the switches combinations
         for i in range(2 ** len(lamps_for_switch)):
             # we are using the integer "i" as a bit mask
-            switches_used = bin(i)[2:]
+            switches_used = bin(i)[2:].zfill(len(lamps_for_switch))
             current_state = initial_state
             # start by 11...11, and apply the corresponding switches
             for s in range(len(switches_used)):
