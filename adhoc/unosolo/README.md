@@ -239,21 +239,201 @@ N+4 X X X X X X X ...
 
 **Respuesta: 6**
 
-## Input
+### Input
 El input es un K tal que `1 <= K <= 5`.
 
-## Output
+### Output
 El output es un R tal que R es la cantidad **mínima** de fichas 
 necesarias para que, acorde a la descripción del problema,
 se pueda llegar hasta la fila N-K a través de una sucesioń de
 comidas de fichas.
 
-## Ejemplo de Input
+### Ejemplo de Input
 ```
 1
 ```
 
-## Ejemplo de Output
+### Ejemplo de Output
 ```
 2
 ```
+
+
+## Solución
+
+La idea sería poder simular de algún modo el progreso del juego, 
+para encontrar el tablero inicial mínimo tal que se pueda llegar
+al estado deseado.
+
+Lo ideal sería poder encontrar un algoritmo greedy, que restringido
+a un determinado set de reglas y movimientos, pueda generar un
+tablero inicial mínimo, dado un determinado tablero resultado.
+
+Ejemplo, para K=1,
+```
+.
+.
+.
+N-3 X X X X X X X ...
+N-2 X X X X X X X ...
+N-1 X X X 1 X X X ...
+N   X X X X X X X ...
+N+1 X X X X X X X ...
+N+2 X X X X X X X ...
+N+3 X X X X X X X ...
+N+4 X X X X X X X ...
+.
+.
+.
+```
+
+Dado el tablero final, el algoritmo podría ir "extendiéndolo",
+hasta encontrar un tablero inicial que cumpla con que no exista
+ninguna ficha en una fila que esté arriba de N. En este caso,
+la extensión buscada sería reemplazar la ficha 1, por dos fichas
+1 y 2, que se encuentren debajo de 1.
+
+```
+.
+.
+.
+N-3 X X X X X X X ...
+N-2 X X X X X X X ...
+N-1 X X X X X X X ...
+N   X X X 2 X X X ...
+N+1 X X X 1 X X X ...
+N+2 X X X X X X X ...
+N+3 X X X X X X X ...
+N+4 X X X X X X X ...
+.
+.
+.
+```
+
+En líneas generales, una ficha 1 puede haber provenido de los siguientes
+estados.
+
+### Comer Arriba
+
+Estado anterior
+```
+X X X
+X 2 X
+X 1 X
+```
+
+Luego de comer
+```
+X 1 X
+X X X
+X X X
+```
+
+### Comer Izquierda
+
+Estado anterior
+```
+X X X X X
+X X 2 1 X
+X X X X X
+```
+
+Luego de comer
+```
+X X X X X
+X 1 X X X
+X X X X X
+```
+
+### Comer Derecha
+
+Estado anterior
+```
+X X X X X
+X 1 2 X X
+X X X X X
+```
+
+Luego de comer
+```
+X X X X X
+X X X 1 X
+X X X X X
+```
+
+### Comer Abajo
+
+Estado anterior
+```
+X 1 X
+X 2 X
+X X X
+```
+
+Luego de comer
+```
+X X X
+X X X
+X 1 X
+```
+
+En este caso, no interesa ninguno de los tableros que ya tenían
+una ficha en una fila que esté arriba de la deseada, ya que 
+para llegar a esa fila, necesariamente pasaron por la fila deseada.
+Es decir, que **no** interesa analizar el movimiento ```COMER ABAJO```.
+
+Entonces, dado un tablero, el mismo pudo provenir de tres tableros 
+posibles. Aquel surgido de una operación 
+de {comer arriba, comer izquierda, comer derecha}. Para mayor comodidad,
+llamemos a estas operaciones A, I, D.
+
+El primer intento que se puede hacer, entonces, es un algoritmo
+por fuerza bruta, que vaya analizando el conjunto de soluciones,
+iterando sobre el tablero final, mediante aplicaciones 
+del inverso de las 3 operaciones permitidas. Para evitar confusiones,
+el nombre de las operaciones lo haremos de forma espejada. Es decir,
+Reverso(A) = RD. Reverso(I) = RD. Reverso(D) = RI.
+
+### RD (reemplazar una ficha por dos debajo)
+
+Estado anterior
+```
+O
+X
+X
+```
+
+Luego de comer
+```
+X
+O
+O
+```
+
+### RI (reemplazar una ficha por dos a la izquierda)
+
+Estado anterior
+```
+X X O
+```
+
+Luego de comer
+```
+O O X
+```
+
+### RD (reemplazar una ficha por dos a la derecha)
+
+Estado anterior
+```
+O X X
+```
+
+Luego de comer
+```
+X O O
+```
+
+Es claro que en cada iteración, la cantidad de posibles 
+soluciones analizadas se multiplica por 3. La complejidad de
+resolver el problema de este modo es, entonces, exponencial O(n^3).
