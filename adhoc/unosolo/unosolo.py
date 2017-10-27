@@ -2,10 +2,18 @@
 # -*- coding: utf-8 -*-
 # https://github.com/lbarrios/practicas-programacion-competitiva/tree/master/adhoc/unosolo
 from termcolor import colored
+import time
+import os
+
+
+def clear_screen():
+    _ = os.system("clear")
+    # print(chr(27) + "[2J")
 
 
 class Board:
     _DEBUG = False
+    _DEBUG_SPEED = 1
     pos_cols = list()
     neg_cols = list()
     count = 0
@@ -27,7 +35,7 @@ class Board:
             max_row = max(max_row, len(col))
         ret = "Board(%s x %s), k=%s" % (total_cols, max_row, self.initial_K) + "\n"
 
-        ret += "neg: %r\npos: %r\n" % (self.neg_cols, self.pos_cols)
+        # ret += "neg: %r\npos: %r\n" % (self.neg_cols, self.pos_cols)
 
         row = 0
         while row < max_row:
@@ -36,9 +44,9 @@ class Board:
                 if col == 0:
                     ret += "|"
                 if row < self.initial_K:
-                    ret += colored("O" if self.defined(col, row) else "x", "red")
+                    ret += colored("O" if self.defined(col, row) else "·", "red")
                 else:
-                    ret += "O" if self.defined(col, row) else " "
+                    ret += "O" if self.defined(col, row) else "."
                 col += 1
             row += 1
             ret += "\n"
@@ -92,8 +100,10 @@ class Board:
 
     def RD(self, x, y):
         if self._DEBUG:
+            clear_screen()
             print("RD(%s, %s)" % (x, y))
             print(self)
+            time.sleep(self._DEBUG_SPEED)
         if not self.defined(x, y):
             raise Exception("that token (%s, %s) is not defined" % (x, y))
         if self.defined(x, y + 1):
@@ -106,8 +116,10 @@ class Board:
 
     def RL(self, x, y):
         if self._DEBUG:
+            clear_screen()
             print("RL(%s, %s)" % (x, y))
             print(self)
+            time.sleep(self._DEBUG_SPEED)
         if not self.defined(x, y):
             raise Exception("that token (%s, %s) is not defined" % (x, y))
         if self.defined(x - 1, y):
@@ -120,8 +132,10 @@ class Board:
 
     def RR(self, x, y):
         if self._DEBUG:
+            clear_screen()
             print("RR(%s, %s)" % (x, y))
             print(self)
+            time.sleep(self._DEBUG_SPEED)
         if not self.defined(x, y):
             raise Exception("that token (%s, %s) is not defined" % (x, y))
         if self.defined(x + 1, y):
@@ -135,20 +149,34 @@ class Board:
 
 K = int(input())
 b = Board(K)
+b._DEBUG = True
+
 if b._DEBUG:
-    print(chr(27) + "[2J")
+    clear_screen()
+    clear_screen()
+    clear_screen()
+    clear_screen()
+    clear_screen()
 
 if K == 1:
     b.RD(0, 0)
     print(b.count)
 
 if K == 2:
+    b.define(2, 3)
+    b.undefine(2, 3)
     b.RD(0, 0)
     b.RR(0, 2)
     b.RD(0, 1)
-    print(b.count)
+    clear_screen()
+    print(b)
+    print("total: " + str(b.count))
 
 if K == 3:
+    b.define(3, 5)
+    b.define(-2, 5)
+    b.undefine(3, 5)
+    b.undefine(-2, 5)
     b.RD(0, 0)
     b.RD(0, 2)
     b.RR(0, 3)
@@ -156,9 +184,15 @@ if K == 3:
     b.RL(0, 3)
     b.RR(0, 4)
     b.RD(0, 2)
-    print(b.count)
+    clear_screen()
+    print(b)
+    print("total: " + str(b.count))
 
 if K == 4:
+    b.define(-4, 9)
+    b.define(4, 9)
+    b.undefine(-4, 9)
+    b.undefine(4, 9)
     b.RD(0, 0)
     b.RD(0, 2)
     b.RR(0, 3)
@@ -180,4 +214,6 @@ if K == 4:
     b.RL(0, 7)
     b.RD(0, 5)
     b.RD(0, 3)
-    print(b.count)
+    clear_screen()
+    print(b)
+    print("total: " + str(b.count))
