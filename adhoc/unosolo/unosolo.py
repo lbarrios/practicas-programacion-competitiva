@@ -4,11 +4,17 @@
 from termcolor import colored
 import time
 import os
+import sys
+
+
+def hide_cursor():
+    sys.stdout.write("\033[?25l")
+    sys.stdout.flush()
 
 
 def clear_screen():
+    print(chr(27) + "[2J")
     _ = os.system("clear")
-    # print(chr(27) + "[2J")
 
 
 class Board:
@@ -152,6 +158,7 @@ b = Board(K)
 b._DEBUG = True
 
 if b._DEBUG:
+    hide_cursor()
     clear_screen()
     clear_screen()
     clear_screen()
@@ -171,6 +178,8 @@ if K == 2:
     clear_screen()
     print(b)
     print("total: " + str(b.count))
+    time.sleep(3)
+    print("")
 
 if K == 3:
     b.define(3, 5)
@@ -187,6 +196,8 @@ if K == 3:
     clear_screen()
     print(b)
     print("total: " + str(b.count))
+    time.sleep(3)
+    print("")
 
 if K == 4:
     b.define(-4, 9)
@@ -217,3 +228,5 @@ if K == 4:
     clear_screen()
     print(b)
     print("total: " + str(b.count))
+    time.sleep(3)
+    print("")
