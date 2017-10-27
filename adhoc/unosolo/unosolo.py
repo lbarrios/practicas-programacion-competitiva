@@ -13,9 +13,9 @@ def hide_cursor():
 
 
 def clear_screen():
-    #print(chr(27) + "[2J")
+    # print(chr(27) + "[2J")
     _ = os.system("clear")
-    #print("\n"*50)
+    # print("\n"*50)
 
 
 class Board:
@@ -25,6 +25,28 @@ class Board:
     neg_cols = list()
     count = 0
     initial_K = 0
+
+    bad_tokens = 0
+
+    def all_tokens(self):
+        tok = list()
+        for x in range(len(self.pos_cols)):
+            for y in range(len(self.pos_cols[x])):
+                if self.pos_cols[x][y]:
+                    tok.append((x, y))
+        for x in range(len(self.neg_cols)):
+            for y in range(len(self.neg_cols[x])):
+                if self.neg_cols[x][y]:
+                    tok.append((-x - 1, y))
+        return tok
+
+    def solved(self):
+        return self.bad_tokens == 0
+        for col in self.pos_cols:
+            if col[0:self.initial_K].count(True) > 0: return False
+        for col in self.neg_cols:
+            if col[0:self.initial_K].count(True) > 0: return False
+        return True
 
     def __init__(self, initial_K):
         self.initial_K = initial_K
@@ -93,6 +115,8 @@ class Board:
             while (len(self.neg_cols[x]) < y + 1):
                 self.neg_cols[x].append(False)
             self.neg_cols[x][y] = True
+        if y < self.initial_K:
+            self.bad_tokens += 1
         self.count += 1
         return True
 
@@ -104,7 +128,17 @@ class Board:
             x = (-x) - 1
             self.neg_cols[x][y] = False
         self.count -= 1
+        if y < self.initial_K:
+            self.bad_tokens -= 1
         return True
+
+    def canRD(self, x, y):
+        return not self.defined(x, y + 1) and not self.defined(x, y + 2)
+
+    def unRD(self, x, y):
+        self.define(x, y)
+        self.undefine(x, y + 1)
+        self.undefine(x, y + 2)
 
     def RD(self, x, y):
         if self._DEBUG:
@@ -123,6 +157,14 @@ class Board:
         self.define(x, y + 1)
         self.define(x, y + 2)
 
+    def canRL(self, x, y):
+        return not self.defined(x - 1, y) and not self.defined(x - 2, y)
+
+    def unRL(self, x, y):
+        self.define(x, y)
+        self.undefine(x - 1, y)
+        self.undefine(x - 2, y)
+
     def RL(self, x, y):
         if self._DEBUG:
             clear_screen()
@@ -139,6 +181,15 @@ class Board:
         self.undefine(x, y)
         self.define(x - 1, y)
         self.define(x - 2, y)
+
+    def canRR(self, x, y):
+        return not self.defined(x + 1, y) and not self.defined(x + 2, y)
+
+    def unRR(self, x, y):
+        # assume that is in a valid rr state
+        self.define(x, y)
+        self.undefine(x + 1, y)
+        self.undefine(x + 2, y)
 
     def RR(self, x, y):
         if self._DEBUG:
@@ -160,7 +211,7 @@ class Board:
 
 K = int(input())
 b = Board(K)
-b._DEBUG = True
+# b._DEBUG = True
 
 if b._DEBUG:
     hide_cursor()
@@ -170,11 +221,11 @@ if b._DEBUG:
     clear_screen()
     clear_screen()
 
-if K == 1:
+if b._DEBUG and K == 1:
     b.RD(0, 0)
     print(b.count)
 
-if K == 2:
+if b._DEBUG and K == 2:
     b.define(2, 3)
     b.undefine(2, 3)
     b.RD(0, 0)
@@ -186,7 +237,7 @@ if K == 2:
     time.sleep(3)
     print("")
 
-if K == 3:
+if b._DEBUG and K == 3:
     b.define(3, 5)
     b.define(-2, 5)
     b.undefine(3, 5)
@@ -204,7 +255,7 @@ if K == 3:
     time.sleep(3)
     print("")
 
-if K == 4:
+if b._DEBUG and K == 4:
     b.define(-4, 9)
     b.define(4, 9)
     b.undefine(-4, 9)
@@ -235,3 +286,166 @@ if K == 4:
     print(b)
     time.sleep(3)
     print("")
+
+best_solution = 24
+
+
+def solve(b):
+    print(b)
+    global best_solution
+
+    if b.count > best_solution:
+        return None
+
+    if b.solved():
+        best_solution = min(best_solution, b.count)
+        print(b)
+        print(best_solution)
+
+    pending = list(b.all_tokens())
+    for tok in pending:
+        # print(b)
+        # print("RD", tok)
+        if b.canRD(tok[0], tok[1]):
+            b.RD(tok[0], tok[1])
+            solve(b)
+            b.unRD(tok[0], tok[1])
+
+    pending = list(b.all_tokens())
+    for tok in pending:
+        # print(b)
+        # print("RR", tok)
+        if b.canRR(tok[0], tok[1]):
+            b.RR(tok[0], tok[1])
+            solve(b)
+            b.unRR(tok[0], tok[1])
+
+    pending = list(b.all_tokens())
+    for tok in pending:
+        # print(b)
+        # print("RL", tok)
+        if b.canRL(tok[0], tok[1]):
+            b.RL(tok[0], tok[1])
+            solve(b)
+            b.unRL(tok[0], tok[1])
+
+
+import sys
+
+
+def solve1(b):
+    global best_solution
+
+    if (2*b.bad_tokens) + b.count > best_solution:
+        return None
+
+    if b.solved():
+        best_solution = min(best_solution, b.count)
+        print(best_solution)
+
+    pending = list(b.all_tokens())
+    for tok in pending:
+        # print(b)
+        # print("RD", tok)
+        if b.canRD(tok[0], tok[1]):
+            b.RD(tok[0], tok[1])
+            solve2(b)
+            b.unRD(tok[0], tok[1])
+
+    pending = list(b.all_tokens())
+    for tok in pending:
+        # print(b)
+        # print("RR", tok)
+        if b.canRR(tok[0], tok[1]):
+            b.RR(tok[0], tok[1])
+            solve3(b)
+            b.unRR(tok[0], tok[1])
+
+    pending = list(b.all_tokens())
+    for tok in pending:
+        # print(b)
+        # print("RL", tok)
+        if b.canRL(tok[0], tok[1]):
+            b.RL(tok[0], tok[1])
+            solve1(b)
+            b.unRL(tok[0], tok[1])
+
+
+def solve2(b):
+    global best_solution
+
+    if (2 * b.bad_tokens) + b.count > best_solution:
+        return None
+
+    if b.solved():
+        best_solution = min(best_solution, b.count)
+        print(best_solution)
+
+    pending = list(b.all_tokens())
+    for tok in pending:
+        # print(b)
+        # print("RR", tok)
+        if b.canRR(tok[0], tok[1]):
+            b.RR(tok[0], tok[1])
+            solve3(b)
+            b.unRR(tok[0], tok[1])
+
+    pending = list(b.all_tokens())
+    for tok in pending:
+        # print(b)
+        # print("RL", tok)
+        if b.canRL(tok[0], tok[1]):
+            b.RL(tok[0], tok[1])
+            solve1(b)
+            b.unRL(tok[0], tok[1])
+
+    pending = list(b.all_tokens())
+    for tok in pending:
+        # print(b)
+        # print("RD", tok)
+        if b.canRD(tok[0], tok[1]):
+            b.RD(tok[0], tok[1])
+            solve2(b)
+            b.unRD(tok[0], tok[1])
+
+
+def solve3(b):
+    global best_solution
+
+    if (2 * b.bad_tokens) + b.count > best_solution:
+        return None
+
+    if b.solved():
+        best_solution = min(best_solution, b.count)
+        print(best_solution)
+
+    pending = list(b.all_tokens())
+    for tok in pending:
+        # print(b)
+        # print("RL", tok)
+        if b.canRL(tok[0], tok[1]):
+            b.RL(tok[0], tok[1])
+            solve1(b)
+            b.unRL(tok[0], tok[1])
+
+    pending = list(b.all_tokens())
+    for tok in pending:
+        # print(b)
+        # print("RD", tok)
+        if b.canRD(tok[0], tok[1]):
+            b.RD(tok[0], tok[1])
+            solve2(b)
+            b.unRD(tok[0], tok[1])
+
+    pending = list(b.all_tokens())
+    for tok in pending:
+        # print(b)
+        # print("RR", tok)
+        if b.canRR(tok[0], tok[1]):
+            b.RR(tok[0], tok[1])
+            solve3(b)
+            b.unRR(tok[0], tok[1])
+
+
+solve1(b)
+print(best_solution)
