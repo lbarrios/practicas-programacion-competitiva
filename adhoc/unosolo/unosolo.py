@@ -13,8 +13,9 @@ def hide_cursor():
 
 
 def clear_screen():
-    print(chr(27) + "[2J")
+    #print(chr(27) + "[2J")
     _ = os.system("clear")
+    #print("\n"*50)
 
 
 class Board:
@@ -40,6 +41,7 @@ class Board:
         for col in self.neg_cols:
             max_row = max(max_row, len(col))
         ret = "Board(%s x %s), k=%s" % (total_cols, max_row, self.initial_K) + "\n"
+        ret = ""
 
         # ret += "neg: %r\npos: %r\n" % (self.neg_cols, self.pos_cols)
 
@@ -52,7 +54,7 @@ class Board:
                 if row < self.initial_K:
                     ret += colored("O" if self.defined(col, row) else "·", "red")
                 else:
-                    ret += "O" if self.defined(col, row) else "."
+                    ret += "O" if self.defined(col, row) else "·"
                 col += 1
             row += 1
             ret += "\n"
@@ -109,6 +111,7 @@ class Board:
             clear_screen()
             print("RD(%s, %s)" % (x, y))
             print(self)
+            sys.stdout.flush()
             time.sleep(self._DEBUG_SPEED)
         if not self.defined(x, y):
             raise Exception("that token (%s, %s) is not defined" % (x, y))
@@ -125,6 +128,7 @@ class Board:
             clear_screen()
             print("RL(%s, %s)" % (x, y))
             print(self)
+            sys.stdout.flush()
             time.sleep(self._DEBUG_SPEED)
         if not self.defined(x, y):
             raise Exception("that token (%s, %s) is not defined" % (x, y))
@@ -141,6 +145,7 @@ class Board:
             clear_screen()
             print("RR(%s, %s)" % (x, y))
             print(self)
+            sys.stdout.flush()
             time.sleep(self._DEBUG_SPEED)
         if not self.defined(x, y):
             raise Exception("that token (%s, %s) is not defined" % (x, y))
@@ -176,8 +181,8 @@ if K == 2:
     b.RR(0, 2)
     b.RD(0, 1)
     clear_screen()
-    print(b)
     print("total: " + str(b.count))
+    print(b)
     time.sleep(3)
     print("")
 
@@ -194,8 +199,8 @@ if K == 3:
     b.RR(0, 4)
     b.RD(0, 2)
     clear_screen()
-    print(b)
     print("total: " + str(b.count))
+    print(b)
     time.sleep(3)
     print("")
 
@@ -226,7 +231,7 @@ if K == 4:
     b.RD(0, 5)
     b.RD(0, 3)
     clear_screen()
-    print(b)
     print("total: " + str(b.count))
+    print(b)
     time.sleep(3)
     print("")
