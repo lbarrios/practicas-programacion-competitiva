@@ -2,6 +2,7 @@
 
 ## Unsolved
 - [Switch The Lights (UVA-11974)](uva/11974-Switch_The_Lights)
+- [Almost Shortest Path (UVA-12144)](uva/12144-Almost_Shortest_Path)
 
 ## Greedy
 
