@@ -7,7 +7,7 @@ for i in $FILES_INPUT; do
 	name=$(echo $i | cut -d'/' -f2)
 
 	echo "Testeando $name..."
-	colordiff <(python $EXEC < "input/$name") "output/$name"
+	diff <(python3 $EXEC < "input/$name") "output/$name"
 
 	if [ "$?" == "0" ]; then
 		echo "Los output son iguales"

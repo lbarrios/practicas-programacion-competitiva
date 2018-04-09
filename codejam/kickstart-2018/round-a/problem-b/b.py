@@ -1,17 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Codejam Kickstart 2018 - Round A - Problem B
+import functools
 
-testcases = int(input())
-for t in range(testcases):
-    N, K = list(map(int, input().split()))
-    items = list(map(int, input().split()))
-    items_with_p = [(i, items.count(i) / len(items)) for i in set(items)]
-
-    expected_value = [sum(items) / len(items)] + [0] * K
-    for k in range(1, K + 1):
-        next_expected_value = expected_value[k - 1]
-        for (i, p) in items_with_p:
-            expected_value[k] += max(i, next_expected_value) * p
-
-    print("Case #%s: %.6f" % (t + 1, expected_value[K]))
+for t in range(int(input())):
+    N, K, Vs = list(map(int, input().split()))+[list(map(int, input().split()))]
+    print("Case #%s: %.6f" % (t + 1, functools.reduce(lambda x, y: sum([max(i, x) * p for (i, p) in [(i, Vs.count(i) / len(Vs)) for i in set(Vs)]]), range(K), sum(Vs) / len(Vs))))
